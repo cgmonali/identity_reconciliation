@@ -4,6 +4,7 @@ from datetime import datetime
 class IdentityReconciliationService:
     @staticmethod
     def identify_contact(data):
+        # Extract input data
         email = data.get('email')
         phone_number = data.get('phoneNumber')
         contact_id = data.get('id')
@@ -35,20 +36,25 @@ class IdentityReconciliationService:
                 link_precedence=Contact.LinkPrecedence.SECONDARY
             )
         
-        # Prepare the response
+        # Prepare and return the response
         return IdentityReconciliationService.prepare_response(primary_contact)
 
     @staticmethod
     def find_matching_contacts(email, phone_number, contact_id):
+        """
+        Find all contacts that match the given email, phone number, or contact ID.
+        Also includes linked contacts.
+        """
         contacts = set()
         
         if contact_id:
             try:
                 contact = Contact.objects.get(id=contact_id)
                 contacts.add(contact)
-                # Add all linked contacts
+                # Add all contacts linked to this contact
                 contacts.update(Contact.objects.filter(linked_id=contact))
                 if contact.linked_id:
+                    # Add all contacts linked to the same primary
                     contacts.update(Contact.objects.filter(linked_id=contact.linked_id))
                     contacts.add(contact.linked_id)
             except Contact.DoesNotExist:
@@ -64,9 +70,13 @@ class IdentityReconciliationService:
 
     @staticmethod
     def determine_primary_contact(contacts):
+        """
+        Determine the primary contact among the given contacts.
+        If multiple primaries, set the oldest as primary and others as secondary.
+        """
         primary_contacts = [c for c in contacts if c.link_precedence == Contact.LinkPrecedence.PRIMARY]
         if not primary_contacts:
-            # If no primary contacts, find the oldest one
+            # If no primary contacts, find the oldest one and set as primary
             oldest_contact = min(contacts, key=lambda x: x.created_at)
             oldest_contact.link_precedence = Contact.LinkPrecedence.PRIMARY
             oldest_contact.save()
@@ -86,6 +96,9 @@ class IdentityReconciliationService:
 
     @staticmethod
     def update_secondary_contacts(contacts, primary_contact):
+        """
+        Update all contacts except the primary to be secondary and link to the primary.
+        """
         for contact in contacts:
             if contact != primary_contact and (
                 contact.link_precedence != Contact.LinkPrecedence.SECONDARY or 
@@ -97,6 +110,9 @@ class IdentityReconciliationService:
 
     @staticmethod
     def prepare_response(primary_contact):
+        """
+        Prepare the response dictionary with primary and secondary contact details.
+        """
         secondary_contacts = Contact.objects.filter(linked_id=primary_contact)
         
         emails = {primary_contact.email} if primary_contact.email else set()

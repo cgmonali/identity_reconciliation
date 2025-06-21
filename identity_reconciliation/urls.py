@@ -16,7 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from contacts.views import IdentifyView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('identify/', IdentifyView.as_view(), name='identify'),
 ]
