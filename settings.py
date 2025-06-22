@@ -31,10 +31,9 @@ DEBUG = env("DEBUG", default="False")
 
 RENDER_EXTERNAL_HOSTNAME = env("RENDER_EXTERNAL_HOSTNAME", default="identity-reconciliation-9fi8.onrender.com")
 
-ALLOWED_HOSTS = [
-    '*',
-    RENDER_EXTERNAL_HOSTNAME
-]
+ALLOWED_HOSTS = ['identity-reconciliation-9fi8.onrender.com', 'localhost', '127.0.0.1',RENDER_EXTERNAL_HOSTNAME]
+
+
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 USE_X_FORWARDED_HOST = True
 USE_X_FORWARDED_PORT = True
