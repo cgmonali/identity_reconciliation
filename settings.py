@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-*_f^(wk(192$4lhq+*wlz=r^(fs@qa48zusp#&9irhxba8zikb
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG", default="False")
 
-RENDER_EXTERNAL_HOSTNAME = env("RENDER_EXTERNAL_HOSTNAME", default="localhost:8000")
+RENDER_EXTERNAL_HOSTNAME = env("RENDER_EXTERNAL_HOSTNAME", default="identity-reconciliation-9fi8.onrender.com")
 
 ALLOWED_HOSTS = [
     '*',
@@ -39,7 +39,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 USE_X_FORWARDED_HOST = True
 USE_X_FORWARDED_PORT = True
 # Application definition
-print("Using Django settings from identity_reconciliation.settings", RENDER_EXTERNAL_HOSTNAME)
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
