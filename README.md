@@ -71,7 +71,6 @@ python manage.py runserver
 
 ## Testing
 
-Run the test suite with:
 ```bash
-python manage.py test
+python manage.py runserver 0:8000
 ```
