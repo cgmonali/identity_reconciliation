@@ -39,7 +39,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 USE_X_FORWARDED_HOST = True
 USE_X_FORWARDED_PORT = True
 # Application definition
-
+print("Using Django settings from identity_reconciliation.settings", RENDER_EXTERNAL_HOSTNAME)
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
