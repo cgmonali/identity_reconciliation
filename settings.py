@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import environ
+
+# Load operating system environment variables and then prepare to use them
+env = environ.Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,8 +29,12 @@ SECRET_KEY = 'django-insecure-*_f^(wk(192$4lhq+*wlz=r^(fs@qa48zusp#&9irhxba8zikb
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+RENDER_EXTERNAL_HOSTNAME = env("RENDER_EXTERNAL_HOSTNAME", default="localhost:8000")
 
+ALLOWED_HOSTS = [
+    '*',
+    RENDER_EXTERNAL_HOSTNAME
+]
 
 # Application definition
 
