@@ -15,6 +15,9 @@ import environ
 
 # Load operating system environment variables and then prepare to use them
 env = environ.Env()
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,7 +35,8 @@ DEBUG = env("DEBUG", default="False")
 RENDER_EXTERNAL_HOSTNAME = env("RENDER_EXTERNAL_HOSTNAME", default="identity-reconciliation-9fi8.onrender.com")
 
 ALLOWED_HOSTS = ['identity-reconciliation-9fi8.onrender.com', 'localhost', '127.0.0.1',RENDER_EXTERNAL_HOSTNAME]
-
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=ALLOWED_HOSTS)
+logger.warning(f"ALLOWED_HOSTS = {ALLOWED_HOSTS}")
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 USE_X_FORWARDED_HOST = True
